@@ -2,6 +2,7 @@ package com.sky.constant;
 
 /**
  * 密码常量
+ * @author Maynormoe
  */
 public class PasswordConstant {
 
