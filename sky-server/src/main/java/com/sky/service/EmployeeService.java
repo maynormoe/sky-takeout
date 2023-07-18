@@ -32,7 +32,7 @@ public interface EmployeeService {
      * 更新用户信息
       * @param employee 用户
      */
-    void update(Employee employee);
+    void update(EmployeeDTO employee);
 
     /**
      * 修改用户状态
@@ -40,4 +40,12 @@ public interface EmployeeService {
      * @param id id
      */
     void startOrStop(Integer status, Long id);
+
+
+    /**
+     * 根据id查询员工数据
+      * @param id id
+     * @return Employee
+     */
+    Employee getById(Long id);
 }

@@ -20,7 +20,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -127,8 +126,10 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @param employee 用户
      */
     @Override
-    public void update(Employee employee) {
-
+    public void update(EmployeeDTO employee) {
+        Employee employeeDto = new Employee();
+        BeanUtils.copyProperties(employee, employeeDto);
+        employeeMapper.update(employeeDto);
     }
 
     /**
@@ -147,4 +148,18 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeMapper.update(employee);
     }
 
+    /**
+     * 根据id查询员工数据
+     *
+     * @param id id
+     * @return Employee
+     */
+    @Override
+    public Employee getById(Long id) {
+        Employee employee = employeeMapper.selectById(id);
+        Employee employeeVo = new Employee();
+        // 用户信息脱敏
+        BeanUtils.copyProperties(employee, employeeVo,"password");
+        return employeeVo;
+    }
 }

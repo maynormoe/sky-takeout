@@ -7,6 +7,9 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+/**
+ * @author Maynormoe
+ */
 @Mapper
 public interface EmployeeMapper {
 
@@ -43,4 +46,6 @@ public interface EmployeeMapper {
       * @param employee 员工
      */
     void update(Employee employee);
+
+    Employee selectById(Long id);
 }

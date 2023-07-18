@@ -109,9 +109,31 @@ public class EmployeeController {
     }
 
     @PostMapping("/status/{status}")
+    @ApiOperation("启用停用员工账号")
     public Result<String> startOrStop(@PathVariable Integer status, Long id) {
         log.info("修改id{}用户的状态", id);
         employeeService.startOrStop(status, id);
+        return Result.success();
+    }
+
+    /**
+     *
+     * @param id id
+     * @return Result<Employee>
+     *
+     */
+    @GetMapping("/{id}")
+    @ApiOperation("根据id查询员工数据")
+    public Result<Employee> getById(@PathVariable Long id) {
+        Employee employee = employeeService.getById(id);
+        return Result.success(employee);
+    }
+
+    @PutMapping
+    @ApiOperation("修改员工信息")
+    public Result<String> update(@RequestBody EmployeeDTO employeeDTO) {
+        log.info("修改id为{}的员工信息: {}", employeeDTO.getId(), employeeDTO);
+        employeeService.update(employeeDTO);
         return Result.success();
     }
 
