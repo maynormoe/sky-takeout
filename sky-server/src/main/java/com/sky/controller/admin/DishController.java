@@ -120,9 +120,9 @@ public class DishController {
      */
     @GetMapping("/list")
     @ApiOperation("根据分类id查询菜品")
-    public Result<List<DishVO>> getById(Integer categoryId) {
+    public Result<List<Dish>> list(Long categoryId) {
         log.info("查询分类id为{}的菜品", categoryId);
-        List<DishVO> dishVOList = dishService.getByCategoryId(categoryId);
-        return Result.success(dishVOList);
+        List<Dish> dishList = dishService.list(categoryId);
+        return Result.success(dishList);
     }
 }

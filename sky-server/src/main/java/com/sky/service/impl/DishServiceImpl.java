@@ -177,8 +177,9 @@ public class DishServiceImpl implements DishService {
      * @return List<DishVO>
      */
     @Override
-    public List<DishVO> getByCategoryId(Integer categoryId) {
-       List<DishVO> dishVOList =  dishMapper.selectByCategoryId(categoryId);
-        return dishVOList;
+    public List<Dish> list(Long categoryId) {
+        Dish dish = Dish.builder().categoryId(categoryId).status(StatusConstant.ENABLE).build();
+        List<Dish> dishList = dishMapper.list(dish);
+        return dishList;
     }
 }

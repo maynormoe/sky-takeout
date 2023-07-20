@@ -56,16 +56,26 @@ public interface DishMapper {
     void deleteById(Long id);
 
     /**
-     *  修改菜品数据
-      * @param dish 菜品数据
+     * 修改菜品数据
+     *
+     * @param dish 菜品数据
      */
     void update(Dish dish);
 
+
     /**
-     *  查询菜品根据分类id
-      * @param categoryId 分类id
-     *  @return  List<DishVO>
+     * 动态查询菜品数据
+     *
+     * @param dish 菜品
+     * @return List<Dish>
      */
-    @Select("select id, name, category_id, price, image, description, status, create_time, update_time, create_user, update_user from dish where category_id = #{categoryId}")
-    List<DishVO> selectByCategoryId(Integer categoryId);
+    List<Dish> list(Dish dish);
+
+    /**
+     * 通过套餐id查询菜品数据
+     *
+     * @param setmealId id
+     * @return List<Dish>
+     */
+    List<Dish> getBySetmealId(Long setmealId);
 }

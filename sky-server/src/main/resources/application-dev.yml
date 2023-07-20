@@ -8,8 +8,8 @@ sky:
     password: 102786
   alioss:
     bucket-name: e99ac772f1600dbc5c896f594d73c416f9dbac311c9fcc40d3507b20
-    access-key-secret: w582uFZXT3QF3VlRlbfRJprv5bJ1iJ
-    access-key-id: LTAI5tPerEyCWgaMcLTcG1TX
+    access-key-secret: 8s2QgNh3bxrwlkzqoBMUiVrlkaWxLe
+    access-key-id: LTAI5tKxFr3gySxYG72eKpNU
     endpoint: oss-cn-shanghai.aliyuncs.com
 spring:
   redis:
