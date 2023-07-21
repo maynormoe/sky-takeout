@@ -6,11 +6,14 @@ import com.sky.annotation.AutoFill;
 import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Setmeal;
 import com.sky.enumeration.OperationType;
+import com.sky.vo.DishItemVO;
 import com.sky.vo.SetmealVO;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * @author Maynormoe
@@ -57,8 +60,24 @@ public interface SetmealMapper {
 
     /**
      * 根据id删除套餐数据
+     *
      * @param id id
      */
     @Delete("delete from setmeal where id = #{id}")
     void deleteById(Long id);
+
+    /**
+     * 动态查询套餐查询
+     *
+     * @param setmeal 套餐
+     * @return List<SetmealVO>
+     */
+    List<SetmealVO> list(Setmeal setmeal);
+
+    /**
+     *  根据 套餐id查询菜品
+      * @param setmealId 套餐id
+     *  @return List<DishItemVO>
+     */
+    List<DishItemVO> getDishItemBySetmealId(Long setmealId);
 }

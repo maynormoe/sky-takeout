@@ -20,8 +20,8 @@ import java.util.Arrays;
 /**
  * @author Maynormoe
  */
-@RestController
 @RequestMapping("/admin/setmeal")
+@RestController("SetmealAdminController")
 @Slf4j
 @Api(tags = "套餐相关接口")
 public class SetmealController {

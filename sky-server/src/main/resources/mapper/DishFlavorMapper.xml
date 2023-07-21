@@ -8,4 +8,7 @@
             (#{df.dishId}, #{df.name}, #{df.value})
         </foreach>
     </insert>
+    <select id="list" resultType="com.sky.entity.DishFlavor">
+        select id, dish_id, name, value from dish_flavor where dish_id = #{dishId}
+    </select>
 </mapper>

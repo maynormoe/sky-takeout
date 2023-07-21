@@ -11,6 +11,9 @@ sky:
     access-key-secret: 8s2QgNh3bxrwlkzqoBMUiVrlkaWxLe
     access-key-id: LTAI5tKxFr3gySxYG72eKpNU
     endpoint: oss-cn-shanghai.aliyuncs.com
+  wechat:
+    appid: wx3d8584349f7f5f6c
+    secret: 9572b3239d227924f5800c609c92486e
 spring:
   redis:
     database: 0
