@@ -11,6 +11,8 @@ import java.sql.SQLIntegrityConstraintViolationException;
 
 /**
  * 全局异常处理器，处理项目中抛出的业务异常
+ *
+ * @author Maynormoe
  */
 @RestControllerAdvice
 @Slf4j
@@ -39,6 +41,7 @@ public class GlobalExceptionHandler {
     public Result<String> exceptionHandler(SQLIntegrityConstraintViolationException exception) {
         String message = exception.getMessage();
         if (!message.contains("Duplicate entry")) {
+            log.error(exception.getMessage());
             return Result.error(MessageConstant.UNKNOWN_ERROR);
         }
         String[] s = message.split(" ");
