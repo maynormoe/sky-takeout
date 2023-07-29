@@ -5,6 +5,8 @@ import com.sky.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.HashMap;
+
 /**
  * @author Maynormoe
  */
@@ -34,4 +36,12 @@ public interface UserMapper {
      */
     @Select("select id, openid, name, phone, sex, id_number, avatar, create_time from user where id = #{userId}")
     User getById(Long userId);
+
+    /**
+     * 根据map统计用户数量
+     *
+     * @param map map
+     * @return Integer
+     */
+    Integer countByMap(HashMap<String, Object> map);
 }

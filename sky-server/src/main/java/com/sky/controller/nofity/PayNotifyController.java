@@ -1,4 +1,4 @@
-package com.sky.controller.user;
+package com.sky.controller.nofity;
 
 import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson.JSON;
@@ -20,6 +20,7 @@ import java.util.HashMap;
 
 /**
  * 支付回调相关接口
+ * @author Maynormoe
  */
 @RestController
 @RequestMapping("/notify")
