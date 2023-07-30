@@ -5,6 +5,7 @@ import com.sky.vo.SalesTop10ReportVO;
 import com.sky.vo.TurnoverReportVO;
 import com.sky.vo.UserReportVO;
 
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 
 /**
@@ -30,18 +31,28 @@ public interface ReportService {
     UserReportVO getUserStatistics(LocalDate begin, LocalDate end);
 
     /**
-     *  获取订单统计
-      * @param begin 开始时间
-     * @param end 结束时间
+     * 获取订单统计
+     *
+     * @param begin 开始时间
+     * @param end   结束时间
      * @return OrderReportVO
      */
     OrderReportVO getOrderStatistics(LocalDate begin, LocalDate end);
 
     /**
      * 统计top10
-      * @param begin 开始时间
-     * @param end 结束时间
+     *
+     * @param begin 开始时间
+     * @param end   结束时间
      * @return SalesTop10ReportVO
      */
     SalesTop10ReportVO getSalesTopStatistics(LocalDate begin, LocalDate end);
+
+    /**
+     * 导出运营数据报表
+     *
+     * @param response res
+     */
+    void exportBussinessData(HttpServletResponse response);
+
 }

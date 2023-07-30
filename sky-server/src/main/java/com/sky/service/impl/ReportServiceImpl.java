@@ -5,18 +5,22 @@ import com.sky.entity.Orders;
 import com.sky.mapper.OrderMapper;
 import com.sky.mapper.UserMapper;
 import com.sky.service.ReportService;
-import com.sky.vo.OrderReportVO;
-import com.sky.vo.SalesTop10ReportVO;
-import com.sky.vo.TurnoverReportVO;
-import com.sky.vo.UserReportVO;
+import com.sky.service.WorkspaceService;
+import com.sky.vo.*;
 import com.sun.org.apache.bcel.internal.generic.GETFIELD;
 import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.Max;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -40,6 +44,10 @@ public class ReportServiceImpl implements ReportService {
 
     @Autowired
     private UserMapper userMapper;
+
+
+    @Autowired
+    private WorkspaceService workspaceService;
 
 
     /**
@@ -206,6 +214,66 @@ public class ReportServiceImpl implements ReportService {
                 .numberList(numberList)
                 .build();
     }
+
+    /**
+     * 导出运营数据报表
+     *
+     * @param response res
+     */
+    @Override
+    public void exportBussinessData(HttpServletResponse response) {
+        // 查询数据库 获取营业数据
+        LocalDate beginDate = LocalDate.now().minusDays(30);
+        LocalDate endDate = LocalDate.now().minusDays(1);
+
+        LocalDateTime beginTime = LocalDateTime.of(beginDate, LocalTime.MIN);
+        LocalDateTime endTime = LocalDateTime.of(endDate, LocalTime.MAX);
+        BusinessDataVO businessData = workspaceService.getBusinessData(beginTime, endTime);
+        // 通过PoI将数据写入Excel
+        InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("template/运营数据报表模板.xlsx");
+
+
+        try {
+            // 基于模板文件创建一个新的excel文件
+            XSSFWorkbook excel = new XSSFWorkbook(inputStream);
+            // 填充数据
+            XSSFSheet sheet1 = excel.getSheet("Sheet1");
+            // 湖区第二行
+            XSSFRow row = sheet1.getRow(1);
+
+            row.getCell(1).setCellValue("时间" + beginDate + "至" + endDate);
+            sheet1.getRow(3).getCell(2).setCellValue(businessData.getTurnover());
+            sheet1.getRow(3).getCell(4).setCellValue(businessData.getOrderCompletionRate());
+            sheet1.getRow(3).getCell(6).setCellValue(businessData.getNewUsers());
+
+            // 获取第五行
+            sheet1.getRow(4).getCell(2).setCellValue(businessData.getValidOrderCount());
+            sheet1.getRow(4).getCell(4).setCellValue(businessData.getUnitPrice());
+            // 明细数据
+            for (int i = 0; i < 30; i++) {
+                LocalDate date = beginDate.plusDays(i);
+                BusinessDataVO businessDataVo = workspaceService.getBusinessData(LocalDateTime.of(date, LocalTime.MIN), LocalDateTime.of(date, LocalTime.MAX));
+                XSSFRow row1 = sheet1.getRow(7 + i);
+                row1.getCell(1).setCellValue(date.toString());
+                row1.getCell(2).setCellValue(businessDataVo.getTurnover());
+                row1.getCell(3).setCellValue(businessDataVo.getValidOrderCount());
+                row1.getCell(4).setCellValue(businessDataVo.getOrderCompletionRate());
+                row1.getCell(5).setCellValue(businessDataVo.getUnitPrice());
+                row1.getCell(6).setCellValue(businessDataVo.getNewUsers());
+
+            }
+            // 通过输出流将excel下载到客户端浏览器
+            ServletOutputStream outputStream = response.getOutputStream();
+            excel.write(outputStream);
+            // close
+            outputStream.close();
+            excel.close();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+
+    }
+
 
     private Integer getOrderCount(LocalDateTime begin, LocalDateTime end, Integer status) {
         HashMap<String, Object> map = new HashMap<>();
